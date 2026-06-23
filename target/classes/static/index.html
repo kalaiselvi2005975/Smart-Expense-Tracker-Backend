@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS file -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Auth Section (Login / Registration) -->
+    <section id="auth-section" class="auth-section">
+        <div class="auth-background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="auth-card-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="brand-logo">
+                        <i class="fa-solid fa-wallet animate-bounce"></i>
+                    </div>
+                    <h1>R-Green Expense</h1>
+                    <p id="auth-subtitle">Track, analyze, and optimize your spending</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="input-group">
+                        <label for="login-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" required placeholder="name@example.com">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="login-password" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Sign In</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <p class="auth-switch">Don't have an account? <a href="#" id="go-to-register">Register here</a></p>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <div class="input-group">
+                        <label for="register-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user input-icon"></i>
+                            <input type="text" id="register-name" required placeholder="Your name">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input type="email" id="register-email" required placeholder="name@example.com">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="register-password" required placeholder="Minimum 6 characters">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Create Account</span>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                    <p class="auth-switch">Already have an account? <a href="#" id="go-to-login">Sign in here</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Application Section -->
+    <section id="app-section" class="app-section d-none">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-wallet brand-icon"></i>
+                <span class="brand-text">R-Green</span>
+            </div>
+            
+            <div class="user-quick-profile">
+                <div class="avatar">
+                    <span id="user-avatar-initials">U</span>
+                </div>
+                <div class="user-details">
+                    <h4 id="user-display-name">Loading...</h4>
+                    <p id="user-display-email">loading@email.com</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-target="dashboard-tab">
+                        <a href="#"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a>
+                    </li>
+                    <li class="nav-item" data-target="expenses-tab">
+                        <a href="#"><i class="fa-solid fa-receipt"></i><span>Expenses</span></a>
+                    </li>
+                    <li class="nav-item" data-target="profile-tab">
+                        <a href="#"><i class="fa-solid fa-user-gear"></i><span>Profile Settings</span></a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navbar for Mobile/Dashboard stats -->
+            <header class="top-navbar">
+                <div class="mobile-toggle" id="mobile-sidebar-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <h1 id="page-title">Dashboard</h1>
+                <div class="quick-action-header">
+                    <button class="btn btn-primary open-add-modal-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>New Expense</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- TAB 1: Dashboard -->
+                <div id="dashboard-tab" class="tab-content active">
+                    <!-- Dashboard Summary Cards -->
+                    <div class="dashboard-grid">
+                        <div class="summary-card total-spent-card">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3>Total Monthly Spent</h3>
+                                <p class="card-value" id="dashboard-total-spent">$0.00</p>
+                                <span class="card-subtext" id="dashboard-summary-month">Current Month</span>
+                            </div>
+                            <div class="card-bg-gradient"></div>
+                        </div>
+
+                        <!-- Date range quick selection & view controller -->
+                        <div class="summary-card config-card">
+                            <div class="card-info">
+                                <h3>View Month</h3>
+                                <div class="month-selector-wrapper">
+                                    <select id="dashboard-year-select" class="form-control"></select>
+                                    <select id="dashboard-month-select" class="form-control"></select>
+                                </div>
+                                <button id="update-dashboard-btn" class="btn btn-secondary btn-sm mt-3">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown & Analytics -->
+                    <div class="dashboard-analytics-grid mt-4">
+                        <!-- Category Breakdown Card -->
+                        <div class="analytics-card card-glass">
+                            <div class="card-header-flex">
+                                <h2>Category Breakdown</h2>
+                                <i class="fa-solid fa-chart-simple text-accent"></i>
+                            </div>
+                            <div class="category-breakdown-list" id="category-breakdown-container">
+                                <!-- Dynamic breakdown progress bars -->
+                                <p class="text-muted text-center py-4">No expense records found for this period.</p>
+                            </div>
+                        </div>
+
+                        <!-- Recent Expenses Card -->
+                        <div class="analytics-card card-glass">
+                            <div class="card-header-flex">
+                                <h2>Recent Activities</h2>
+                                <button class="btn btn-link btn-sm nav-link-simulate" data-target="expenses-tab">View All</button>
+                            </div>
+                            <div class="recent-expenses-list" id="recent-expenses-container">
+                                <!-- Dynamic recent list items -->
+                                <p class="text-muted text-center py-4">No recent expenses.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Expenses Management -->
+                <div id="expenses-tab" class="tab-content d-none">
+                    <!-- Filters Toolbar -->
+                    <div class="filters-card card-glass mb-4">
+                        <form id="filters-form" class="filters-form">
+                            <div class="filter-group">
+                                <label for="filter-category">Category</label>
+                                <select id="filter-category" class="form-control">
+                                    <option value="">All Categories</option>
+                                    <option value="Food">Food & Dining</option>
+                                    <option value="Travel">Travel & Transport</option>
+                                    <option value="Utilities">Utilities & Bills</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Housing">Housing & Rent</option>
+                                    <option value="Other">Other Expenses</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="filter-start-date">Start Date</label>
+                                <input type="date" id="filter-start-date" class="form-control">
+                            </div>
+                            <div class="filter-group">
+                                <label for="filter-end-date">End Date</label>
+                                <input type="date" id="filter-end-date" class="form-control">
+                            </div>
+                            <div class="filter-buttons">
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-filter"></i> Apply
+                                </button>
+                                <button type="button" id="clear-filters-btn" class="btn btn-secondary btn-sm">
+                                    <i class="fa-solid fa-filter-circle-xmark"></i> Clear
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Expenses List Container -->
+                    <div class="table-container card-glass">
+                        <div class="table-header-toolbar">
+                            <h2>Expense Ledger</h2>
+                            <span class="ledger-count" id="ledger-count">0 items</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Amount</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expenses-table-body">
+                                    <!-- Dynamic rows generated by JS -->
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">No expenses recorded yet. Click 'New Expense' to start.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Profile Settings -->
+                <div id="profile-tab" class="tab-content d-none">
+                    <div class="profile-layout">
+                        <!-- User Card -->
+                        <div class="profile-card card-glass">
+                            <div class="profile-header-avatar">
+                                <div class="avatar-large">
+                                    <span id="profile-avatar-initials">U</span>
+                                </div>
+                                <h2 id="profile-name">User Name</h2>
+                                <p id="profile-email">user@email.com</p>
+                                <span class="profile-joined" id="profile-joined-date">Joined: June 2026</span>
+                            </div>
+                        </div>
+
+                        <!-- Update Profile Forms -->
+                        <div class="profile-actions-card card-glass">
+                            <h2>Edit Profile Details</h2>
+                            <form id="profile-update-form" class="mt-4">
+                                <div class="input-group">
+                                    <label for="profile-edit-name">Display Name</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-user input-icon"></i>
+                                        <input type="text" id="profile-edit-name" required placeholder="Your name">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label for="profile-edit-password">New Password</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-lock input-icon"></i>
+                                        <input type="password" id="profile-edit-password" placeholder="Leave empty to keep unchanged">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Profile Details
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- EXPENSE MODAL (ADD / EDIT) -->
+    <div id="expense-modal" class="modal-overlay d-none">
+        <div class="modal-card card-glass animate-scale-up">
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Expense</h2>
+                <button class="modal-close-btn" id="close-modal-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="expense-form">
+                <input type="hidden" id="expense-id">
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="expense-amount">Amount ($)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-dollar-sign input-icon text-accent"></i>
+                            <input type="number" id="expense-amount" step="0.01" required min="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="expense-category">Category</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-tags input-icon"></i>
+                            <select id="expense-category" required class="form-control">
+                                <option value="" disabled selected>Select category...</option>
+                                <option value="Food">Food & Dining</option>
+                                <option value="Travel">Travel & Transport</option>
+                                <option value="Utilities">Utilities & Bills</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Housing">Housing & Rent</option>
+                                <option value="Other">Other Expenses</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="expense-date">Date</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-day input-icon"></i>
+                            <input type="date" id="expense-date" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="expense-description">Description</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-pen-nib input-icon"></i>
+                            <input type="text" id="expense-description" placeholder="e.g., Grocery shopping, taxi fare">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="save-expense-btn">
+                        <span>Add Expense</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="sidebar-drawer-overlay" class="drawer-overlay d-none"></div>
+
+    <!-- JS script -->
+    <script src="/js/app.js"></script>
+</body>
+</html>
