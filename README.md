@@ -140,6 +140,4 @@ src/main/java/com/expensetracker/
 └── exception/      Global error handling
 ```
 
-## License
-
-MIT – free for portfolio and internship use.
+.
